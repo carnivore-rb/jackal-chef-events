@@ -8,7 +8,12 @@ module Jackal
       # Load and configure chef
       def setup(*_)
         require 'chef'
-        # needs configure
+        config_path = config.fetch(
+          :chef_events, :chef_config_path,
+          '/etc/chef-server/jackal-client.rb'
+        )
+        content = File.read(config_path)
+        Chef::Config.from_string(content, config_path)
       end
 
       # Check if message is valid
